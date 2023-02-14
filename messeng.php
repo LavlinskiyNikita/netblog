@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!$_SESSION['user']) {
+    exit(header('location: ./login.php'));
+}
 ?>
 
 <!DOCTYPE html>

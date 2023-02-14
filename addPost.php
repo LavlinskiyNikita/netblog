@@ -1,5 +1,8 @@
 <?php
 session_start();
+if (!$_SESSION['user']) {
+    exit(header('location: ./login.php'));
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,12 +46,12 @@ session_start();
     </header>
 
     <div class="content">
-      <div class="formadd">
-        <input type="file" class="custom-file-input formadd__all-class"/>
-        <input type="text" class="formadd__input formadd__all-class" placeholder="name">
-        <input type="text" class="formadd__input formadd__all-class" placeholder="description">
+      <form action="./vendor/createPost.php" method="post" enctype="multipart/form-data" class="formadd">
+        <input type="file" class="custom-file-input formadd__all-class" name="photo"/>
+        <input type="text" class="formadd__input formadd__all-class" name="title" placeholder="name">
+        <input type="text" class="formadd__input formadd__all-class" name="descr" placeholder="description">
         <button class="formadd__submit formadd__all-class" type="submit">add</button>
-      </div>
+      </form>
     </div>
   </div>  
 </body>

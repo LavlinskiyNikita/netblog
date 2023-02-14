@@ -1,5 +1,9 @@
 <?php
     session_start();
+if (!$_SESSION['user']) {
+    exit(header('location: ./login.php'));
+}
+
     require_once 'vendor/connect.php';
     $user_id = $_GET['id'];
     $user = mysqli_query($connect, "SELECT * FROM `user` WHERE `id` = '$user_id'");
@@ -60,6 +64,7 @@
           </label>
         </div>
         <button class="profile-edit__btn">save</button>
+        <a href="./vendor/logout.php">logout</a>
       </form>
     </div>
   </div>

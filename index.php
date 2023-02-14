@@ -2,6 +2,10 @@
     session_start();
     require_once 'vendor/connect.php';
     print_r($_SESSION['userProfile']['nikname']);
+
+if (!$_SESSION['user']) {
+    exit(header('location: ./login.php'));
+}
 ?>
 
 <!DOCTYPE html>

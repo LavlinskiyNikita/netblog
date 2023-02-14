@@ -1,15 +1,25 @@
 <?php
     session_start();
+if (!$_SESSION['user']) {
+    exit(header('location: ./login.php'));
+}
+
     require_once 'vendor/connect.php';
     $user_id = $_GET['id'];
     $user = mysqli_query($connect, "SELECT * FROM `user` WHERE `id` = '$user_id' ");
     $user = mysqli_fetch_assoc($user);
 
+
     if ($_GET['id'] == $_SESSION['user']['id']) {
-        $position = 'access';
+        $access = 'access';
+        echo 'твой провиль';
     } else {
-        $position = 'view';
+        $noAccess = 'view';
+        echo 'не твой провиль';
     }
+
+    $posts = mysqli_query($connect, "SELECT * FROM `posts`");
+
 ?>
 
 <!DOCTYPE html>
@@ -71,136 +81,63 @@
           <div class="profile__buttom">
             <p class="profile__description"><?=$user['description']?></p>
             <a href="<?= $user['pesonal_sait'] ?>" target="_blank" ><?= $user['pesonal_sait']?></a>
-            <?php if ($position = 'access'): ?>
-              <a href="./profileEdit<?='?id='. $user['id'].''?>" class="profile__edit">edit</a>
-            <?php else: ?>
-            <p>вы не вопделц старницы</p>
-              <?php endif; ?>
+              <?php
+
+                if ($access) {
+                    echo '<a href="./profileEdit?id='.$user['id'].'" class="profile__edit">edit</a>';
+                } if ($noAccess) {
+                    echo '<p>вы не влоделец старницы</p>';
+                }
+              ?>
           </div>
         </div>
         <div class="content-post masonry" id="masonry">
-
-          <div class="post masonryPost">
-            <div class="post-profile__content">
-              <img src="./image/images.png" alt="" class="post-profile__image">
-              <p class="post-profile__title"></p>
-              <p class="post-profile__descr">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio harum magnam voluptas enim officiis rem nisi facilis magni velit similique placeat adipisci, deserunt corrupti quo. Reiciendis maiores illo repudiandae ut?fdgfsghrrrrrrrr Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore neque eveniet eius ut delectus. Nam ratione reiciendis voluptas eum corrupti vel similique, ullam fugit sunt. Expedita amet ut minus blanditiis.</p>
-            </div>
-            <div class="post-profile__bottom">
-              <div class="post__profile__none">
-                <div class="post-profile__popup-edit">
-                  <a href="/editpost.php" class="post-profile__popup-link">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/edit-2.svg" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">edit</p>
+            <?php
+            foreach ($posts as $post) {
+                ?>
+                <div class="post masonryPost">
+                    <div class="post-profile__content">
+                        <img src="<?= $post['photo'] ?>" alt="" class="post-profile__image">
+                        <p class="post-profile__title post__title"><?= $post['title'] ?></p>
+                        <p class="post-profile__descr"><?= $post['description'] ?></p>
                     </div>
-                  </a>
-                  <a href="/index.php" class="post-profile__popup-link post-profile__popup-link--delete">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">delete</p>
+                    <div class="post-profile__bottom">
+                        <div class="post__profile__none">
+                            <div class="post-profile__popup-edit">
+                                <a href="/editpost.php" class="post-profile__popup-link">
+                                    <div class="post-profile__popup-link-edit">
+                                        <img src="/image/icon/Icon/post/edit-2.svg" alt="" class="post-profile__icon-popup">
+                                        <p class="post-profile__name-popup">edit</p>
+                                    </div>
+                                </a>
+                                <a href="/index.php" class="post-profile__popup-link post-profile__popup-link--delete">
+                                    <div class="post-profile__popup-link-edit">
+                                        <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
+                                        <p class="post-profile__name-popup">delete</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <a href="" class="post-profile__user-link">
+                                <img src="" alt="" class="post-profile__photo-link">
+                                <p class="post-profile__name-link">user__name</p>
+                            </a>
+                            <div class="post-profile__down">
+                                <button class="post-profile__like">
+                                    <p class="post-profile__like-count">234</p>
+                                    <img src="./image/icon/Icon/post/like.svg" alt="" class="post-profile__like-image">
+                                </button>
+                                <button class="post-profile__dots-vertecal">
+                                    <img src="/image/icon/Icon/post/dots-vertical.svg" alt="">
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                  </a>
                 </div>
-              </div>
-              <div class="flex">
-                <a href="" class="post-profile__user-link">
-                  <img src="" alt="" class="post-profile__photo-link">
-                  <p class="post-profile__name-link">user__name</p>
-                </a>
-                <div class="post-profile__down">
-                  <button class="post-profile__like">
-                    <p class="post-profile__like-count">234</p>
-                    <img src="./image/icon/Icon/post/like.svg" alt="" class="post-profile__like-image">
-                  </button>
-                  <button class="post-profile__dots-vertecal">
-                    <img src="/image/icon/Icon/post/dots-vertical.svg" alt="">
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="post masonryPost">
-            <div class="post-profile__content">
-              <img src="./image/images.png" alt="" class="post-profile__image">
-              <p class="post-profile__title"></p>
-              <p class="post-profile__descr">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio harum magnam voluptas enim officiis rem nisi facilis magni velit similique placeat adipisci, deserunt corrupti quo. Reiciendis maiores illo repudiandae ut?fdgfsghrrrrrrrr Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore neque eveniet eius ut delectus. Nam ratione reiciendis voluptas eum corrupti vel similique, ullam fugit sunt. Expedita amet ut minus blanditiis.</p>
-            </div>
-            <div class="post-profile__bottom">
-              <div class="post__profile__none">
-                <div class="post-profile__popup-edit">
-                  <a href="/editpost.php" class="post-profile__popup-link">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/edit-2.svg" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">edit</p>
-                    </div>
-                  </a>
-                  <a href="/index.php" class="post-profile__popup-link post-profile__popup-link--delete">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">delete</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-              <div class="flex">
-                <a href="" class="post-profile__user-link">
-                  <img src="" alt="" class="post-profile__photo-link">
-                  <p class="post-profile__name-link">user__name</p>
-                </a>
-                <div class="post-profile__down">
-                  <button class="post-profile__like">
-                    <p class="post-profile__like-count">234</p>
-                    <img src="./image/icon/Icon/post/like.svg" alt="" class="post-profile__like-image">
-                  </button>
-                  <button class="post-profile__dots-vertecal">
-                    <img src="/image/icon/Icon/post/dots-vertical.svg" alt="">
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="post masonryPost">
-            <div class="post-profile__content">
-              <img src="./image/images.png" alt="" class="post-profile__image">
-              <p class="post-profile__title"></p>
-              <p class="post-profile__descr">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio harum magnam voluptas enim officiis rem nisi facilis magni velit similique placeat adipisci, deserunt corrupti quo. Reiciendis maiores illo repudiandae ut?fdgfsghrrrrrrrr Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore neque eveniet eius ut delectus. Nam ratione reiciendis voluptas eum corrupti vel similique, ullam fugit sunt. Expedita amet ut minus blanditiis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, veniam earum. Impedit ab dolorum obcaecati aliquid cupiditate est, totam ea velit, repellendus distinctio necessitatibus alias quo minus tenetur officiis reprehenderit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam ab ullam labore cum unde, repellat ducimus. Nihil veritatis totam laboriosam distinctio eum quod magni animi, incidunt consectetur, id nostrum culpa.</p>
-            </div>
-            <div class="post-profile__bottom">
-              <div class="post__profile__none">
-                <div class="post-profile__popup-edit">
-                  <a href="/editpost.php" class="post-profile__popup-link">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/edit-2.svg" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">edit</p>
-                    </div>
-                  </a>
-                  <a href="/index.php" class="post-profile__popup-link post-profile__popup-link--delete">
-                    <div class="post-profile__popup-link-edit">
-                      <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
-                      <p class="post-profile__name-popup">delete</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-              <div class="flex">
-                <a href="" class="post-profile__user-link">
-                  <img src="" alt="" class="post-profile__photo-link">
-                  <p class="post-profile__name-link">user__name</p>
-                </a>
-                <div class="post-profile__down">
-                  <button class="post-profile__like">
-                    <p class="post-profile__like-count">234</p>
-                    <img src="./image/icon/Icon/post/like.svg" alt="" class="post-profile__like-image">
-                  </button>
-                  <button class="post-profile__dots-vertecal">
-                    <img src="/image/icon/Icon/post/dots-vertical.svg" alt="">
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+                <?php
+            }
+            ?>
           </div>
         </div>
       </div>
