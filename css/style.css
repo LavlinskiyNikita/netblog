@@ -95,7 +95,6 @@
 
 .post {
   box-sizing: border-box;
-  width: 100%;
   padding: 8px 8px 15px 8px;
   background-color: white;
   box-shadow: -4px -4px 24px rgba(0, 0, 0, 0.25), 4px 4px 24px rgba(0, 0, 0, 0.25);
@@ -103,16 +102,15 @@
   margin-bottom: 20px;
 }
 
+.post__content {
+  po
+  max-width: 100%;
+}
+
 .post__image {
   width: 100%;
   border-radius: 18px;
   background-color: rgb(209, 209, 209);
-  margin-bottom: 10px;
-}
-
-.post__title {
-  font-size: 24px;
-  text-transform: uppercase;
   margin-bottom: 10px;
 }
 
@@ -126,6 +124,7 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .post__user-link {
@@ -341,11 +340,10 @@
 }
 
 .post__title {
-  display: block;
   font-size: 24px;
   text-transform: uppercase;
   margin-bottom: 10px;
-  width: 100%;
+  width: auto;
 }
 
 .post-profile__descr {
@@ -357,8 +355,8 @@
 .post-profile__bottom {
   position: relative;
   align-items: center;
-
   display: flex;
+  margin-bottom: 10px;
 }
 
 .flex {
@@ -442,6 +440,11 @@
 .post-profile__popup-link-edit {
   display: flex;
   justify-content: center;
+}
+
+.post__date {
+  font-size: 10px;
+  color: #a1a1a1;
 }
 
 
@@ -732,7 +735,6 @@
   }
 
   .post {
-    width: calc(50% - 10px) ;
     margin-right: 20px;
     margin-bottom: 40px;
   }

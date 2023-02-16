@@ -18,7 +18,14 @@ if (!$_SESSION['user']) {
         echo 'не твой провиль';
     }
 
-    $posts = mysqli_query($connect, "SELECT * FROM `posts`");
+    $result = mysqli_query($connect, "SELECT * FROM `posts`");
+    $user_post = array();
+
+    while ($posts = mysqli_fetch_assoc($result)) {
+        if ($posts['id__user'] == $user_id) {
+            $user_post[] = $posts;
+        }
+    }
 
 ?>
 
@@ -93,28 +100,28 @@ if (!$_SESSION['user']) {
         </div>
         <div class="content-post masonry" id="masonry">
             <?php
-            foreach ($posts as $post) {
+            foreach ($user_post as $post) {
                 ?>
                 <div class="post masonryPost">
-                    <div class="post-profile__content">
+                    <div class="post-profile__content post__content">
                         <img src="<?= $post['photo'] ?>" alt="" class="post-profile__image">
-                        <p class="post-profile__title post__title"><?= $post['title'] ?></p>
-                        <p class="post-profile__descr"><?= $post['description'] ?></p>
+                        <p class="post__title"><?= $post['title'] ?></p>
+                        <p class="post__descr"><?= $post['description'] ?></p>
                     </div>
                     <div class="post-profile__bottom">
                         <div class="post__profile__none">
                             <div class="post-profile__popup-edit">
-                                <a href="/editpost.php" class="post-profile__popup-link">
+                                <a href="./editpost?id=<?=$post['id']?>" class="post-profile__popup-link">
                                     <div class="post-profile__popup-link-edit">
                                         <img src="/image/icon/Icon/post/edit-2.svg" alt="" class="post-profile__icon-popup">
-                                        <p class="post-profile__name-popup">edit</p>
+                                        <p href="./editpost?id=<?=$post['id']?>" class="post-profile__name-popup">edit</p>
                                     </div>
                                 </a>
-                                <a href="/index.php" class="post-profile__popup-link post-profile__popup-link--delete">
-                                    <div class="post-profile__popup-link-edit">
-                                        <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
-                                        <p class="post-profile__name-popup">delete</p>
-                                    </div>
+                                <a href="./vendor/deletePost?id=<?=$post['id']?>" class="post-profile__popup-link post-profile__popup-link--delete">
+                                        <div class="post-profile__popup-link-edit">
+                                            <img src="/image/icon/Icon/post/Trash.png" alt="" class="post-profile__icon-popup">
+                                            <p class="post-profile__name-popup">delete</p>
+                                        </div>
                                 </a>
                             </div>
                         </div>
@@ -134,6 +141,7 @@ if (!$_SESSION['user']) {
                             </div>
                         </div>
                     </div>
+                    <p class="post__date"><?=$post['date'] ?></p>
                 </div>
                 <?php
             }
