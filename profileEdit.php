@@ -16,7 +16,7 @@ if (!$_SESSION['user']) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>edit profile <?=$user['nikname']?> | netblog.com</title>
   <link rel="shortcut icon" href="./image/icon/logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
 </head>
@@ -64,6 +64,7 @@ if (!$_SESSION['user']) {
           </label>
         </div>
         <button class="profile-edit__btn">save</button>
+        <button class="edit-post__btn">back</button>
         <a href="./vendor/logout.php">logout</a>
       </form>
     </div>

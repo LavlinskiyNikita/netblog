@@ -16,7 +16,7 @@ if (!$_SESSION['user']) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="./image/icon/logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
-  <title>Document</title>
+  <title>main | netblog.com</title>
 </head>
 <body>
   
@@ -80,6 +80,7 @@ if (!$_SESSION['user']) {
               <img src="" alt="" class="post__photo-link">
               <p class="post__name-link">user__name</p>
             </a>
+
             <button class="post__like">
               <p class="post__like-count">234</p>
               <img src="./image/icon/Icon/post/like.svg" alt="" class="post__like-image">

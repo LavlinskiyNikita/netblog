@@ -1,10 +1,11 @@
 <?php
     session_start();
-if (!$_SESSION['user']) {
-    exit(header('location: ./login.php'));
-}
+    if (!$_SESSION['user']) {
+        exit(header('location: ./login.php'));
+    }
 
     require_once 'vendor/connect.php';
+
     $user_id = $_GET['id'];
     $user = mysqli_query($connect, "SELECT * FROM `user` WHERE `id` = '$user_id' ");
     $user = mysqli_fetch_assoc($user);
@@ -12,20 +13,22 @@ if (!$_SESSION['user']) {
 
     if ($_GET['id'] == $_SESSION['user']['id']) {
         $access = 'access';
-        echo 'твой провиль';
     } else {
-        $noAccess = 'view';
-        echo 'не твой провиль';
+        $access= 'view';
     }
 
     $result = mysqli_query($connect, "SELECT * FROM `posts`");
     $user_post = array();
+
 
     while ($posts = mysqli_fetch_assoc($result)) {
         if ($posts['id__user'] == $user_id) {
             $user_post[] = $posts;
         }
     }
+
+    $follow = mysqli_query($connect,"SELECT * FROM `sub` WHERE `subscribe_author_id` = '$user_id'");
+    $check_follow = mysqli_fetch_assoc($follow);
 
 ?>
 
@@ -37,7 +40,7 @@ if (!$_SESSION['user']) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="./image/icon/logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
-  <title><?=$user['nikname'] ?></title>
+  <title><?=$user['nikname']?> | netblog.com</title>
 </head>
 <body>
 <div class="page">
@@ -80,8 +83,8 @@ if (!$_SESSION['user']) {
                 <p class="profile__name-p"><?=$user['nikname'] ?></p>
               </div>
               <div class="profile__folowl">
-                <a href="" class="profile__folowls profile__folowls-links"><p class="profile__count-folows"> 543 folowls</p></a>
-                <a href="" class="profile__folowling profile__folowls-links"><p class="profile__count-folowing"> 534 folowling</p></a>
+                <a href="" class="profile__folowls profile__folowls-links"><p class="profile__count-folows">0 folowls</p></a>
+                <a href="" class="profile__folowling profile__folowls-links"><p class="profile__count-folowing">0 folowling</p></a>
               </div>
             </div>
           </div>
@@ -90,17 +93,23 @@ if (!$_SESSION['user']) {
             <a href="<?= $user['pesonal_sait'] ?>" target="_blank" ><?= $user['pesonal_sait']?></a>
               <?php
 
-                if ($access) {
+                if ($access == "access") {
                     echo '<a href="./profileEdit?id='.$user['id'].'" class="profile__edit">edit</a>';
-                } if ($noAccess) {
-                    echo '<p>вы не влоделец старницы</p>';
+                } else {
+                    if ($check_follow['subscribe_object_id'] == '1') {
+                        echo 'вы подписанны';
+                    } else {
+                        echo '<form action="./vendor/follow?id='.$user['id'].'" method="post" class="gv">
+                            <button type="submit" class="eqher" type="submit" value="'.$user['id'].'"  name="followBtn">follow</button>
+                          </form>';
+                    }
                 }
               ?>
           </div>
         </div>
         <div class="content-post masonry" id="masonry">
             <?php
-            foreach ($user_post as $post) {
+                foreach (array_reverse($user_post, true) as $post) {
                 ?>
                 <div class="post masonryPost">
                     <div class="post-profile__content post__content">
@@ -127,7 +136,7 @@ if (!$_SESSION['user']) {
                         </div>
                         <div class="flex">
                             <a href="" class="post-profile__user-link">
-                                <img src="" alt="" class="post-profile__photo-link">
+                                <img src="<?= $user['avatar'] ?>" alt="" class="post-profile__photo-link">
                                 <p class="post-profile__name-link">user__name</p>
                             </a>
                             <div class="post-profile__down">
