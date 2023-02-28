@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once 'vendor/connect.php';
+require_once 'vendor/site.php';
+require_once 'component/header.php';
 $post_id = $_GET['id'];
 $post = mysqli_query($connect, "SELECT * FROM `posts` WHERE `id` = '$post_id'");
 $post = mysqli_fetch_assoc($post);
@@ -14,15 +16,11 @@ $post = mysqli_fetch_assoc($post);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="./image/icon/logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
-  <title><?=$post['title']?> | netblog.com</title>
+  <title><?=$post['title']?> | <?=$namesite?></title>
 </head>
 <body>
   <div class="page">
-    <header class="header">
-      <div class="header__logo">
-        <img class="header__logo-img" src="./image/icon/logo.svg" alt="" srcset="">
-      </div>
-    </header>
+    <?= $header?>
     <div class="content">
       <form action="./vendor/postEdit.php" method="post" enctype="multipirat/form-data">
           <input type="hidden" name="id" value="<?= $post['id'] ?>">

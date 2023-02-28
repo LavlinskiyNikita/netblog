@@ -1,10 +1,12 @@
 <?php
     session_start();
-if (!$_SESSION['user']) {
-    exit(header('location: ./login.php'));
-}
+  if (!$_SESSION['user']) {
+      exit(header('location: ./login.php'));
+  }
 
     require_once 'vendor/connect.php';
+    require_once 'vendor/site.php';
+    require_once 'component/header.php';
     $user_id = $_GET['id'];
     $user = mysqli_query($connect, "SELECT * FROM `user` WHERE `id` = '$user_id'");
     $user = mysqli_fetch_assoc($user);
@@ -16,17 +18,13 @@ if (!$_SESSION['user']) {
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>edit profile <?=$user['nikname']?> | netblog.com</title>
+  <title>edit profile <?=$user['nikname']?> | <?=$namesite?></title>
   <link rel="shortcut icon" href="./image/icon/logo.svg" type="image/x-icon">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
   <div class="page">
-    <header class="header">
-      <div class="header__logo">
-        <img class="header__logo-img" src="./image/icon/logo.svg" alt="" srcset="">
-      </div>
-    </header>
+    <?= $header?>
     <div class="content">
       <form action="vendor/updateprofile.php" method="post"  enctype="multipart/form-data" class="profile-edit" >
           <input type="hidden" name="id" value="<?= $user['id'] ?>">

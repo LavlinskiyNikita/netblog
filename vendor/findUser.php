@@ -15,7 +15,7 @@
                     $avatarSearch = $findendt['avatar'];
 
                     $_SESSION['find-user__person'] = '
-                        <a href="./profile?id= '. $idSearch .'" class="find-user__person">
+                        <a href="./profile?id='. $idSearch .'" class="find-user__person">
                              <div class="find-user__avatr">
                                 <img class="find-user__image" src="'. $avatarSearch .'">
                             </div>

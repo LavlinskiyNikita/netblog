@@ -24,7 +24,7 @@
             move_uploaded_file($_FILES['avatar']['tmp_name'],'../' . $path);
             $edituser = mysqli_query($connect, "UPDATE `user` SET `nikname` = '$nikname', `description` = '$description', `avatar` = '$path', `pesonal_sait` = '$personal_site' WHERE `user`.`id` = '$id'");
 
-            $_SESSION['user']['avatar'] = $edituser['avatar'];
+            $_SESSION['user']['avatar'] = $path;
 
             header('location: ../profile?id='. $id .'');
 

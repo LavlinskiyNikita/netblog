@@ -1,0 +1,2 @@
+<?php
+  $namesite = 'netblog.com';

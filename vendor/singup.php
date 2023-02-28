@@ -13,7 +13,7 @@
 
     if ($password === $passwordconfirm) {
         if ( $check__email > 0) {
-            if ($check__nik == 0) {
+            if ($check__nik > 0) {
                 $path = 'uploads/avatar/'.time() . $_FILES['avatar']['name'];
                 echo $path;
                 move_uploaded_file($_FILES['avatar']['tmp_name'],'../' . $path);
